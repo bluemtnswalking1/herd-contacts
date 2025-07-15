@@ -47,10 +47,10 @@ export default function WaitlistForm() {
         margin: '20px 0'
       }}>
         <h3 style={{ color: '#15803d', marginBottom: '10px' }}>
-          ✅ You're on the list!
+          ✅ You&apos;re on the list!
         </h3>
         <p style={{ color: '#166534', margin: 0 }}>
-          We'll send you an invite code when Herd is ready for early access.
+          We&apos;ll send you an invite code when Herd is ready for early access.
         </p>
       </div>
     )
@@ -65,7 +65,7 @@ export default function WaitlistForm() {
     }}>
       <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Join the Waitlist</h3>
       <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '20px' }}>
-        Get early access when we're ready to launch.
+        Get early access when we&apos;re ready to launch.
       </p>
       
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
