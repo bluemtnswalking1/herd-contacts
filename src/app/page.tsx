@@ -1,4 +1,5 @@
 'use client'
+import ContactList from '@/components/ContactList'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import LoginForm from '@/components/LoginForm'
@@ -31,10 +32,6 @@ export default function Home() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-  }
-
   const handleValidInvite = () => {
     setHasValidInvite(true)
   }
@@ -53,57 +50,9 @@ export default function Home() {
     )
   }
 
-  // If user is logged in, show dashboard
+  // If user is logged in, show contact management
   if (user) {
-    return (
-      <main style={{ 
-        padding: '50px 20px', 
-        textAlign: 'center',
-        fontFamily: 'system-ui, sans-serif',
-        maxWidth: '600px',
-        margin: '0 auto'
-      }}>
-        <h1 style={{ marginBottom: '20px', color: '#111827' }}>Welcome to Herd by Design!</h1>
-        <p style={{ marginBottom: '10px', color: '#6b7280' }}>Logged in as: {user.email}</p>
-        
-        <button
-          onClick={handleSignOut}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#ef4444',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            marginTop: '20px'
-          }}
-        >
-          Sign Out
-        </button>
-        
-        <div style={{ 
-          marginTop: '40px', 
-          padding: '30px', 
-          backgroundColor: '#f9fafb', 
-          borderRadius: '8px',
-          border: '1px solid #e5e7eb'
-        }}>
-          <h2 style={{ marginTop: 0, color: '#111827' }}>Coming Soon:</h2>
-          <ul style={{ 
-            textAlign: 'left', 
-            maxWidth: '300px', 
-            margin: '0 auto',
-            color: '#6b7280',
-            lineHeight: '1.6'
-          }}>
-            <li>Contact Management</li>
-            <li>AI Gift Recommendations</li>
-            <li>Shopping Cart</li>
-            <li>Contact Import</li>
-          </ul>
-        </div>
-      </main>
-    )
+    return <ContactList user={user} />
   }
 
   // If user has valid invite, show signup/login
