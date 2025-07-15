@@ -29,8 +29,9 @@ export default function LoginForm() {
         })
         if (error) throw error
       }
-    } catch (error: any) {
-      setMessage(error.message)
+    } catch (error: unknown) {
+  const message = error instanceof Error ? error.message : 'An error occurred'
+  setMessage(message)
     } finally {
       setLoading(false)
     }
