@@ -105,13 +105,6 @@ export default function ContactForm({ user, contact, onSave, onCancel }: Contact
         user_id: user.id
       }
 
-      // Remove any undefined or empty string values
-      Object.keys(contactData).forEach(key => {
-        if (contactData[key] === '' || contactData[key] === undefined) {
-          contactData[key] = null
-        }
-      })
-
       console.log('Submitting contact data:', contactData)
       console.log('User ID:', user.id)
       console.log('User ID type:', typeof user.id)
