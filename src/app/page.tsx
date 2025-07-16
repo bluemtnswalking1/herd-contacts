@@ -13,19 +13,23 @@ export default function Home() {
   const [hasValidInvite, setHasValidInvite] = useState(false)
 
   useEffect(() => {
-    // Get initial user
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
+    // Get initial session
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
       setLoading(false)
     }
     
-    getUser()
+    getSession()
 
-    // Listen for auth changes
+    // Listen for auth changes and handle token refresh
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
+        if (event === 'TOKEN_REFRESHED') {
+          console.log('Token refreshed')
+        }
         setUser(session?.user ?? null)
+        setLoading(false)
       }
     )
 

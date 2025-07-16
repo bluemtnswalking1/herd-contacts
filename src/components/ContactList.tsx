@@ -1,4 +1,5 @@
 'use client'
+import ContactImport from './ContactImport'
 import ContactForm from './ContactForm'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -28,6 +29,7 @@ interface ContactListProps {
 
 export default function ContactList({ user }: ContactListProps) {
   const [contacts, setContacts] = useState<Contact[]>([])
+  const [showImport, setShowImport] = useState(false)
   const [loading, setLoading] = useState(true)
   const [selectedGroup, setSelectedGroup] = useState('All')
   const [showAddForm, setShowAddForm] = useState(false)
@@ -100,6 +102,15 @@ const handleSaveContact = () => {
     )
   }
 
+const handleImportComplete = () => {
+    setShowImport(false)
+    fetchContacts() // Refresh the contact list
+  }
+
+  const handleCancelImport = () => {
+    setShowImport(false)
+  }
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       {/* Header */}
@@ -118,6 +129,20 @@ const handleSaveContact = () => {
           </p>
         </div>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button
+            onClick={() => setShowImport(true)}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#10b981',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            📱 Import
+          </button>
           <button
             onClick={() => setShowAddForm(true)}
             style={{
@@ -294,6 +319,14 @@ const handleSaveContact = () => {
           contact={editingContact}
           onSave={handleSaveContact}
           onCancel={handleCancelForm}
+        />
+      )}
+{/* Import Modal */}
+      {showImport && (
+        <ContactImport
+          user={user}
+          onImportComplete={handleImportComplete}
+          onCancel={handleCancelImport}
         />
       )}
     </div>
