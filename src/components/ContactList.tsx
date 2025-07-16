@@ -111,6 +111,33 @@ const handleImportComplete = () => {
     setShowImport(false)
   }
 
+const handleDeleteAll = async () => {
+    const confirmDelete = confirm(
+      `Are you sure you want to delete ALL ${contacts.length} contacts? This action cannot be undone.`
+    )
+    
+    if (!confirmDelete) return
+
+    try {
+      setLoading(true)
+      
+      const { error } = await supabase
+        .from('contacts')
+        .delete()
+        .eq('user_id', user.id)
+
+      if (error) throw error
+      
+      setContacts([])
+      alert('All contacts deleted successfully')
+    } catch (error) {
+      console.error('Error deleting all contacts:', error)
+      alert('Failed to delete contacts')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       {/* Header */}
@@ -128,7 +155,7 @@ const handleImportComplete = () => {
             Logged in as: {user.email}
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={() => setShowImport(true)}
             style={{
@@ -157,6 +184,23 @@ const handleImportComplete = () => {
           >
             + Add Contact
           </button>
+          {contacts.length > 0 && (
+            <button
+              onClick={handleDeleteAll}
+              disabled={loading}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: loading ? '#9ca3af' : '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              🗑️ Delete All
+            </button>
+          )}
           <button
             onClick={handleSignOut}
             style={{
