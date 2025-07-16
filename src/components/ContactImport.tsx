@@ -3,6 +3,19 @@ import { useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
 
+interface Contact {
+  name: string
+  email: string
+  phone: string
+  company: string
+  location: string
+  job_title: string
+  birthday: string | null
+  notes: string
+  relationship: string
+  group_name: string
+}
+
 interface ContactImportProps {
   user: User
   onImportComplete: () => void
@@ -13,7 +26,7 @@ export default function ContactImport({ user, onImportComplete, onCancel }: Cont
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [file, setFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<any[]>([])
+  const [preview, setPreview] = useState<Contact[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +71,7 @@ export default function ContactImport({ user, onImportComplete, onCancel }: Cont
       if (values.length < 2) continue
 
       // Create contact object from CSV row
-      const contact: any = {}
+      const contact: Record<string, string> = {}
       headers.forEach((header, index) => {
         contact[header] = values[index] || ''
       })
@@ -108,7 +121,7 @@ export default function ContactImport({ user, onImportComplete, onCancel }: Cont
     return result
   }
 
-  const buildName = (contact: any): string => {
+  const buildName = (contact: Record<string, string>): string => {
     const firstName = contact['First name'] || ''
     const middleName = contact['Middle name'] || ''
     const lastName = contact['Last name'] || ''
@@ -150,7 +163,7 @@ const parseDate = (dateString: string): string | null => {
     }
   }
 
-  const extractEmail = (contact: any): string => {
+  const extractEmail = (contact: Record<string, string>): string => {
     const emailFields = [
       'Email : home',
       'Email : work', 
@@ -167,7 +180,7 @@ const parseDate = (dateString: string): string | null => {
     return ''
   }
 
-  const extractPhone = (contact: any): string => {
+  const extractPhone = (contact: Record<string, string>): string => {
     const phoneFields = [
       'Phone : mobile',
       'Phone : iPhone', 
@@ -186,7 +199,7 @@ const parseDate = (dateString: string): string | null => {
     return ''
   }
 
-  const extractLocation = (contact: any): string => {
+  const extractLocation = (contact: Record<string, string>): string => {
     const city = contact['Address : home : City'] || contact['Address : work : City'] || ''
     const state = contact['Address : home : State'] || contact['Address : work : State'] || ''
     
@@ -226,7 +239,7 @@ const parseDate = (dateString: string): string | null => {
         
         console.log(`Inserting batch ${batchNum}/${totalBatches} (${batch.length} contacts)`)
         
-        const { data, error: insertError } = await supabase
+        const { error: insertError } = await supabase
           .from('contacts')
           .insert(batch)
           .select()
