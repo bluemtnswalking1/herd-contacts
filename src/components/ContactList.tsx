@@ -4,6 +4,7 @@ import ContactForm from './ContactForm'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
+import ChatBot from './ChatBot'
 
 interface Contact {
   id: number
@@ -34,6 +35,7 @@ export default function ContactList({ user }: ContactListProps) {
   const [selectedGroup, setSelectedGroup] = useState('All')
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
+  const [showChat, setShowChat] = useState(false)
 
   const groups = ['All', 'Family', 'Work', 'Friends', 'Professional']
 
@@ -169,6 +171,20 @@ const handleDeleteAll = async () => {
             }}
           >
             📱 Import
+          </button>
+          <button
+            onClick={() => setShowChat(true)}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#8b5cf6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            🤖 AI Chat
           </button>
           <button
             onClick={() => setShowAddForm(true)}
@@ -373,6 +389,12 @@ const handleDeleteAll = async () => {
           onCancel={handleCancelImport}
         />
       )}
+{/* AI ChatBot */}
+      <ChatBot 
+        user={user}
+        isOpen={showChat}
+        onClose={() => setShowChat(false)}
+      />
     </div>
   )
 }
