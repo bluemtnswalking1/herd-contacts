@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
 
 function extractNamesFromMessage(message: string): string[] {
-  const names = []
+  const names: string[] = []
   
   // Simple name extraction patterns
   const patterns = [
@@ -166,9 +166,9 @@ Respond with ONLY valid JSON:
         break // Success, exit retry loop
       } catch (error: unknown) {
         retryCount++
-        console.log(`Attempt ${retryCount} failed:`, error.status)
+        console.log(`Attempt ${retryCount} failed:`, (error as any)?.status)
         
-        if (error.status === 529 && retryCount < maxRetries) {
+        if ((error as any)?.status === 529 && retryCount < maxRetries) {
           // API overloaded, wait and retry
           const waitTime = Math.pow(2, retryCount) * 1000 // Exponential backoff
           console.log(`Retrying in ${waitTime}ms...`)
