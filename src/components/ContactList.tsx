@@ -40,25 +40,25 @@ export default function ContactList({ user }: ContactListProps) {
   const groups = ['All', 'Family', 'Work', 'Friends', 'Professional']
 
   useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('contacts')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('name')
+
+        if (error) throw error
+        setContacts(data || [])
+      } catch (error) {
+        console.error('Error fetching contacts:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
     fetchContacts()
   }, [user])
-
-  const fetchContacts = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('contacts')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('name')
-
-      if (error) throw error
-      setContacts(data || [])
-    } catch (error) {
-      console.error('Error fetching contacts:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const deleteContact = async (contactId: number) => {
     if (!confirm('Are you sure you want to delete this contact?')) return

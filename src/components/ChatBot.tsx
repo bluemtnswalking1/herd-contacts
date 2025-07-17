@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import { MessageCircle, Send, X, ShoppingCart } from 'lucide-react'
+import { MessageCircle, Send, X } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 
 interface ChatMessage {
@@ -303,7 +303,7 @@ export default function ChatBot({ user, isOpen, onClose }: ChatBotProps) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about gifts for your contacts..."
+              placeholder=&quot;Ask about gift recommendations&quot;
               disabled={loading}
               style={{
                 flex: 1,

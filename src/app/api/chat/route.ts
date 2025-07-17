@@ -164,7 +164,7 @@ Respond with ONLY valid JSON:
           messages: [{ role: 'user', content: prompt }]
         })
         break // Success, exit retry loop
-      } catch (error: any) {
+      } catch (error: unknown) {
         retryCount++
         console.log(`Attempt ${retryCount} failed:`, error.status)
         
