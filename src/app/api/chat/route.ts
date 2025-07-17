@@ -166,9 +166,10 @@ Respond with ONLY valid JSON:
         break // Success, exit retry loop
       } catch (error: unknown) {
         retryCount++
-        console.log(`Attempt ${retryCount} failed:`, (error as any)?.status)
+        const errorStatus = error && typeof error === 'object' && 'status' in error ? (error as { status: number }).status : 'unknown'
+        console.log(`Attempt ${retryCount} failed:`, errorStatus)
         
-        if ((error as any)?.status === 529 && retryCount < maxRetries) {
+        if (errorStatus === 529 && retryCount < maxRetries) {
           // API overloaded, wait and retry
           const waitTime = Math.pow(2, retryCount) * 1000 // Exponential backoff
           console.log(`Retrying in ${waitTime}ms...`)
