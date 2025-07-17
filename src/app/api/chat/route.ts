@@ -196,7 +196,13 @@ Respond with ONLY valid JSON:
       })
     }
 
-    const responseText = response.content[0]?.text || '{}'
+    let responseText = '{}'
+    if (response.content && response.content.length > 0) {
+      const firstContent = response.content[0]
+      if (firstContent.type === 'text') {
+        responseText = firstContent.text
+      }
+    }
     
     try {
       const parsed = JSON.parse(responseText)
