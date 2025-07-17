@@ -153,7 +153,7 @@ export default function ChatBot({ user, isOpen, onClose }: ChatBotProps) {
           backgroundColor: '#f8fafc'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <MessageCircle className="w-6 h-6 text-blue-600" />
+            <MessageCircle style={{ width: '24px', height: '24px', color: '#3b82f6' }} />
             <h3 style={{ margin: 0, color: '#111827' }}>AI Gift Assistant</h3>
           </div>
           <button
@@ -166,7 +166,7 @@ export default function ChatBot({ user, isOpen, onClose }: ChatBotProps) {
               borderRadius: '4px'
             }}
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X style={{ width: '20px', height: '20px', color: '#6b7280' }} />
           </button>
         </div>
 
@@ -244,7 +244,7 @@ export default function ChatBot({ user, isOpen, onClose }: ChatBotProps) {
                             textAlign: 'left'
                           }}
                         >
-                          "{action}"
+                          &ldquo;{action}&rdquo;
                         </button>
                       ))}
                     </div>
@@ -303,7 +303,7 @@ export default function ChatBot({ user, isOpen, onClose }: ChatBotProps) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder=&quot;Ask about gift recommendations&quot;
+              placeholder="Ask about gifts for your contacts..."
               disabled={loading}
               style={{
                 flex: 1,
@@ -329,7 +329,7 @@ export default function ChatBot({ user, isOpen, onClose }: ChatBotProps) {
                 justifyContent: 'center'
               }}
             >
-              <Send className="w-4 h-4" />
+              <Send style={{ width: '16px', height: '16px' }} />
             </button>
           </div>
         </div>
