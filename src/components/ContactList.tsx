@@ -39,24 +39,24 @@ export default function ContactList({ user }: ContactListProps) {
 
   const groups = ['All', 'Family', 'Work', 'Friends', 'Professional']
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('contacts')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('name')
+  const fetchContacts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('contacts')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('name')
 
-        if (error) throw error
-        setContacts(data || [])
-      } catch (error) {
-        console.error('Error fetching contacts:', error)
-      } finally {
-        setLoading(false)
-      }
+      if (error) throw error
+      setContacts(data || [])
+    } catch (error) {
+      console.error('Error fetching contacts:', error)
+    } finally {
+      setLoading(false)
     }
-    
+  }
+
+  useEffect(() => {
     fetchContacts()
   }, [user])
 
@@ -77,11 +77,11 @@ export default function ContactList({ user }: ContactListProps) {
     }
   }
 
-const handleSignOut = async () => {
+  const handleSignOut = async () => {
     await supabase.auth.signOut()
   }
 
-const handleSaveContact = () => {
+  const handleSaveContact = () => {
     setShowAddForm(false)
     setEditingContact(null)
     fetchContacts() // Refresh the list
@@ -104,7 +104,7 @@ const handleSaveContact = () => {
     )
   }
 
-const handleImportComplete = () => {
+  const handleImportComplete = () => {
     setShowImport(false)
     fetchContacts() // Refresh the contact list
   }
@@ -113,7 +113,7 @@ const handleImportComplete = () => {
     setShowImport(false)
   }
 
-const handleDeleteAll = async () => {
+  const handleDeleteAll = async () => {
     const confirmDelete = confirm(
       `Are you sure you want to delete ALL ${contacts.length} contacts? This action cannot be undone.`
     )
@@ -372,7 +372,8 @@ const handleDeleteAll = async () => {
           ))}
         </div>
       )}
-{/* Add/Edit Contact Form */}
+
+      {/* Add/Edit Contact Form */}
       {(showAddForm || editingContact) && (
         <ContactForm
           user={user}
@@ -381,7 +382,8 @@ const handleDeleteAll = async () => {
           onCancel={handleCancelForm}
         />
       )}
-{/* Import Modal */}
+
+      {/* Import Modal */}
       {showImport && (
         <ContactImport
           user={user}
@@ -389,7 +391,8 @@ const handleDeleteAll = async () => {
           onCancel={handleCancelImport}
         />
       )}
-{/* AI ChatBot */}
+
+      {/* AI ChatBot */}
       <ChatBot 
         user={user}
         isOpen={showChat}
